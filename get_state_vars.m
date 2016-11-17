@@ -1,4 +1,4 @@
-function vars = get_state_vars(~, state_vars, M, m, b, l, I, F g)
+function vars = get_state_vars(~, state_vars, M, m, b, l, I, F)
 g = 9.8; % m/s^2;
 
 x = state_vars(1); % m
