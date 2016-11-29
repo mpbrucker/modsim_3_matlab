@@ -7,7 +7,7 @@ function animate_data()
     h_p = .3; % height of pendulum (m)
     
     
-    [t,out] = run_pendulum(0,3);
+    [t,out] = run_pendulum(0,5, h_p,w_p,.005);
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
     
