@@ -21,10 +21,21 @@ function [t,res] = run_pendulum(initial_time, final_time, length, width, timeste
     I = get_inertia_moment(l*2,w,m); % moment of inertia of the pendulum, kg*m^2
     F = 0; % force applied to cart, N
     
+    % Ode options: event stops sim when pendulum hits cart, rel tol
+    % increases tolerance 
+    
+    function [value,isterminal,direction] = events(~, state_vars)
+        value = state_vars(2);
+        isterminal = 1; 
+        direction = 0;
+    end
+    
+    options = odeset('Events', @events, 'RelTol', 1e-4);
+    
     dxdt = @(ti, state_vars) get_state_vars(ti, state_vars, M, m, b, l, I,F);
     
 
-    [t, state_vars] = ode113(dxdt, tspan, state_vars_init);
+    [t, state_vars] = ode113(dxdt, tspan, state_vars_init, options);
     
     res = state_vars;
 end
