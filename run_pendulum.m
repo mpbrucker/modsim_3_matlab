@@ -25,7 +25,7 @@ function [t,res] = run_pendulum(initial_time, final_time, length, width, timeste
     % increases tolerance 
     
     function [value,isterminal,direction] = events(~, state_vars)
-        value = state_vars(2);
+        value = state_vars(2) - pi/2;
         isterminal = 1; 
         direction = 0;
     end
