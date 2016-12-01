@@ -4,10 +4,10 @@ function animate_data()
     h = .2; % 1/2 Height of cart (m)
     
     w_p = .05; % 1/2 width of pendulum (m)
-    h_p = .3; % height of pendulum (m)
+    h_p = .6; % height of pendulum (m)
     
     
-    [t,out] = run_pendulum(0,5, h_p,w_p,.005);
+    [t,out] = run_pendulum(0,8, h_p,w_p,.005);
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
     
