@@ -25,15 +25,17 @@ function [t,res] = run_pendulum(initial_time, final_time, length, width, timeste
     % increases tolerance 
     
     function [value,isterminal,direction] = events(~, state_vars)
-        value = state_vars(:,2)
+        value = [state_vars(2) - pi/2; state_vars(];
         isterminal = 1; 
-        direction = 
+        direction = 0;
     end
+    
+    options = odeset('Events', @events, 'RelTol', 1e-4);
     
     dxdt = @(ti, state_vars) get_state_vars(ti, state_vars, M, m, b, l, I,F);
     
 
-    [t, state_vars] = ode113(dxdt, tspan, state_vars_init);
+    [t, state_vars] = ode113(dxdt, tspan, state_vars_init, options);
     
     res = state_vars;
 end

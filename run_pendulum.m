@@ -3,7 +3,7 @@ function [t,res] = run_pendulum(initial_time, final_time, length, width, timeste
     tspan = initial_time:timestep:final_time; % Builds the set of times
 
     x_init = 0; % m
-    theta_init = pi-.01; % rad
+    theta_init = pi+.01; % rad
     
     v_x_init = 0; % m/s
     v_theta_init = 0; % rad/s
@@ -25,9 +25,9 @@ function [t,res] = run_pendulum(initial_time, final_time, length, width, timeste
     % increases tolerance 
     
     function [value,isterminal,direction] = events(~, state_vars)
-        value = state_vars(2) - pi/2;
-        isterminal = 1; 
-        direction = 0;
+        value = [state_vars(2) - pi/2; state_vars(2) - 3*pi/2];
+        isterminal = [1; 1]; 
+        direction = [0; 0];
     end
     
     options = odeset('Events', @events, 'RelTol', 1e-4);
