@@ -7,7 +7,8 @@ function animate_data()
     h_p = .6; % height of pendulum (m)
     
     
-    [t,out] = run_pendulum(0,8, h_p,w_p,.005);
+    [t,out] = run_pendulum(0,20, h_p,w_p,.001);
+    display(t(end));
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
     
@@ -29,7 +30,8 @@ function animate_data()
     cart = fill(x,y,'r');
     pendulum = fill(x_p,y_p,'b','LineWidth',0.01);
     hold off;
-    axis([-6 6 0 6]);
+    min_max = [min(x_vals)-w,max(x_vals)+w,0,6];
+    axis(min_max);
 
     % Iterate across the time interval, animating the shapes
     for j = 1:length(t)-1
