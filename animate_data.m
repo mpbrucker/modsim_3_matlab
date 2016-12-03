@@ -1,20 +1,23 @@
 function animate_data()
     clf;
-    w = 1; % 1/2 Width of cart (m)
-    h = .2; % 1/2 Height of cart (m)
+    w = 1.5; % 1/2 Width of cart (m)
+    h = 1; % 1/2 Height of cart (m)
     
-    w_p = .05; % 1/2 width of pendulum (m)
-    h_p = .6; % height of pendulum (m)
+    w_p = .3; % 1/2 width of pendulum (m)
+    h_p = 3; % height of pendulum (m)
+    
+    m_person = 80.7; % kg, average mass of person in North America
+    % https://en.wikipedia.org/wiki/Human_body_weight
     
     
-    [t,out] = run_pendulum(0,20, h_p,w_p,.001);
+    [t,out] = run_pendulum(0,20, h_p,w_p, m_person, .001);
     display(t(end));
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
     
     
     x_center = 0; % X center of the cart
-    y_center = .2; % Y center of the cart
+    y_center = h/2; % Y center of the cart
     x = [x_center-w x_center+w x_center+w x_center-w]; % X points for the cart
     y = [y_center+h y_center+h y_center-h y_center-h];  % Y points for the cart
     
