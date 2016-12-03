@@ -1,4 +1,4 @@
-function [t,res,eventTime] = run_pendulum(initial_time, final_time, length, width, mass_person, timestep)
+function [t,res,eventTime] = run_pendulum2(initial_time, final_time, length, width, mass_person, timestep)
 
 
     tspan = initial_time:timestep:final_time; % Builds the set of times

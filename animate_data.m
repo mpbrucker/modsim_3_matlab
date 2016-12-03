@@ -9,8 +9,12 @@ function animate_data()
     m_person = 80.7; % kg, average mass of person in North America
     % https://en.wikipedia.org/wiki/Human_body_weight
     
+<<<<<<< HEAD
     
     [t,out] = run_pendulum(0,20, h_p,w_p, m_person, .001);
+=======
+    [t,out] = run_pendulum(0,5, h_p,w_p,.01);
+>>>>>>> b6e90b2d8380c5b31f6e40826470229569c94a77
     display(t(end));
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
@@ -33,8 +37,10 @@ function animate_data()
     cart = fill(x,y,'r');
     pendulum = fill(x_p,y_p,'b','LineWidth',0.01);
     hold off;
-    min_max = [min(x_vals)-w,max(x_vals)+w,0,6];
+    %min_max = [min(x_vals)-w,max(x_vals)+w,0,6];
+    min_max = [-6 6 0 6];
     axis(min_max);
+
 
     % Iterate across the time interval, animating the shapes
     for j = 1:length(t)-1
@@ -57,6 +63,10 @@ function animate_data()
           new_pen_vertices = transpose(vertcat(x_p,y_p));
           pendulum.Vertices = new_pen_vertices;
           drawnow limitrate
+          
+          new_axis = [(xp_center-(w*3)) (xp_center+(w*3)) 0 6];
+          axis(new_axis);
+          
           pause(t(j+1)-t(j));
     end
     
