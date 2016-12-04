@@ -1,7 +1,7 @@
 function animate_data()
     clf;
     w = 1.5; % 1/2 Width of cart (m)
-    h = 1; % 1/2 Height of cart (m)
+    h = .5; % 1/2 Height of cart (m)
     
     w_p = .3; % 1/2 width of pendulum (m)
     h_p = 3; % height of pendulum (m)
@@ -9,7 +9,7 @@ function animate_data()
     m_person = 80.7; % kg, average mass of person in North America
     % https://en.wikipedia.org/wiki/Human_body_weight
     
-    [t,out] = run_pendulum(0,20, h_p,w_p, m_person, .001);
+    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .05, 6500,500,6000);
     display(t(end));
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
@@ -30,10 +30,14 @@ function animate_data()
     
     hold on;
     cart = fill(x,y,'r');
-    pendulum = fill(x_p,y_p,'b','LineWidth',0.01);
+    pendulum = line(x_p,y_p,'LineWidth',2);
+    dot = plot(xp_center, yp_center + h_p, 'b.', 'MarkerSize', 20);
     hold off;
     %min_max = [min(x_vals)-w,max(x_vals)+w,0,6];
-    min_max = [-6 6 0 6];
+    
+    % Sets the view window
+    height = max(x_vals) - min(x_vals) + 2*w; % Height of the window 
+    min_max = [min(x_vals)-w max(x_vals)+w 0 height];
     axis(min_max);
 
 
@@ -55,12 +59,14 @@ function animate_data()
 %               xp_center+h_p*cos(theta)+w*cos(theta),xp_center+w*cos(theta)];
 %           y_p = [yp_center+w*sin(theta),yp_center+h_p*sin(theta)+w*sin(theta), ...
 %               yp_center+h_p*sin(theta)-w*sin(theta),yp_center-w*sin(theta)];
-          new_pen_vertices = transpose(vertcat(x_p,y_p));
-          pendulum.Vertices = new_pen_vertices;
+          pendulum.XData = x_p;
+          pendulum.YData = y_p;
+          dot.XData = xp_center + h_p*cos(theta);
+          dot.YData = yp_center + h_p*sin(theta);
           drawnow limitrate
           
-          new_axis = [(xp_center-(w*3)) (xp_center+(w*3)) 0 6];
-          axis(new_axis);
+          %new_axis = [(xp_center-(w*3)) (xp_center+(w*6)) 0 w*6];
+          %axis(new_axis);
           
           pause(t(j+1)-t(j));
     end
