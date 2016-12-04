@@ -1,7 +1,7 @@
 function res = get_heat_map()
 initial_time  = 0;
-final_time = 20;
-length_p = 3; % m
+final_time = 60;
+length = 3; % m
 width = .3; % m
 
 timestep_range = .001:.001:.005
@@ -10,13 +10,13 @@ mass_person_range = 45:5:90
 time_length = length(timestep_range)
 mass_length = length(mass_person_range)
 
-matrix = zeros(time_length,mass_length);
+matrix = zeros(time_length),length(mass_length));
 
 for i = 1:time_length
     i
     for j =  1:mass_length
         j
-        [t, res] = run_pendulum(initial_time, final_time, length_p, width, mass_person_range(j), timestep_range(i));
+        [t, res] = run_pendulum(initial_time, final_time, length, width, mass_person_range(j), timestep_range(i));
         matrix(i,j) = t(end);
     end
 end
