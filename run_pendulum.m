@@ -96,7 +96,6 @@ function [t,res,eventTime] = run_pendulum(initial_time, final_time, length, widt
         end
     end
     
-    t(end)
     res = state_vars;
     
 end
