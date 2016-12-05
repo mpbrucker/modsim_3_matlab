@@ -89,6 +89,7 @@ function [t,res,eventTime,failState] = run_pendulum(initial_time, final_time, le
             break;
         end
     end
+
     res = state_vars;
     
 end
