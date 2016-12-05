@@ -1,11 +1,12 @@
-function [t,res,eventTime] = run_pendulum(initial_time, final_time, length, width, mass_person, timestep)
+function [t,res,eventTime,failState] = run_pendulum(initial_time, final_time, length, width, mass_person, timestep,k_p,k_i,k_d)
 
+    failState = 0; % The failure state of the system
 
     tspan = initial_time:timestep:final_time; % Builds the set of times
 
     x_init = 0; % m
 
-    theta_init = pi+.2; % rad
+    theta_init = pi+.1; % rad
     
     v_x_init = 0; % m/s
     v_theta_init = 0; % rad/s
@@ -29,7 +30,7 @@ function [t,res,eventTime] = run_pendulum(initial_time, final_time, length, widt
     % Ode options: event stops sim when pendulum hits cart, rel tol
     % increases tolerance 
     
-    maxRange = .5; % radians, range of theta (centered around 0) for 
+    maxRange = pi; % radians, range of theta (centered around 0) for 
     % pendulum to be considered stable
     diff = maxRange/2;
     pos_value = pi - diff; % radians, values for event function
@@ -49,53 +50,46 @@ function [t,res,eventTime] = run_pendulum(initial_time, final_time, length, widt
 
     % The state vars to represent the system state after every timestep
     curr_theta = 0; % records the angle of the pendulum after each timestep
-    state_vars = [];
+    state_vars = [state_vars_init(1) state_vars_init(2) state_vars_init(3) state_vars_init(4)];
 
-    t = [0]; % The vector of times after each timestep
+    t = 0; % The vector of times after each timestep
     
-    error_vals = [pi-theta_init]; % The vector of errors
-    k_p = 10000; % Proportional constant (P term)
-    k_i = 6000; % Integral constant (I term)
-    k_d = 4000; % Derivative constant (D term)
+    error_vals = pi-theta_init; % The vector of errors
+%     k_p = 8000; % Proportional constant (P term)
+%     k_i = 4000; % Integral constant (I term)
+%     k_d = 6000; % Derivative constant (D term)
+
     
     size_time = size(tspan,2);
     eventTime = 0;
     for j = 1:size_time-1
+        if (abs(error_vals(end)) < 0.001)
+        F = 0;
+        else
         [i,d] = get_PID_params(t,error_vals);
-%         if (abs(j-round(size_time/2))<5)
-%             F=22;
-%         else
-            F = error_vals(end)*k_p+i*k_i+d*k_d; % Proportional outside force
-%         end
+        F = error_vals(end)*k_p+i*k_i+d*k_d; 
+        end
         dxdt = @(ti, vars) get_state_vars(ti, vars, M, m, b, l, I,F);
-        [t_out, out_vars, timeEvents] = ode45(dxdt, [0 timestep], state_vars_init, options);
+        [t_out, out_vars] = ode45(dxdt, [0 timestep], state_vars_init, options);
         
         
         curr_theta = out_vars(end,2); % The pendulum angle after each timestep
         state_vars_init = out_vars(end,:); % The state vars to plug in to the next timestep function
         
+
+        
         error_vals = cat(1,error_vals,pi-curr_theta);
         
-        if isempty(timeEvents) ==  1
-            thisEventTime = 0;
-        else
-            thisEventTime = timeEvents(1);
-        end
-        eventTime = thisEventTime + eventTime; 
         
         % Builds the vectors of times and state vars after each timestep
         t = vertcat(t,t(end)+t_out(end));
         state_vars = cat(1,state_vars,out_vars(end,:));
-        
-        % Stops the simulation if the system fails
-%         if (curr_theta <= pi/2 || curr_theta >= (3*pi)/2)
-%             break;
-%         end
-        if (curr_theta <= pos_value || curr_theta >= neg_value)
+        if (curr_theta <= (pos_value + .01) || curr_theta >= (neg_value-.01))
+            failState = 1;
             break;
         end
     end
-    
+
     res = state_vars;
     
 end
