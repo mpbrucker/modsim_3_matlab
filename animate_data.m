@@ -9,7 +9,9 @@ function animate_data()
     m_person = 80.7; % kg, average mass of person in North America
     % https://en.wikipedia.org/wiki/Human_body_weight
     
-    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .05, 6500,500,6000);
+%     [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 8000,500,1000);
+    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 9600,2000,1100);
+
     display(t(end));
     x_vals = out(:,1);
     thetas = out(:,2)-pi/2; % Gets the out angles as standardized angles
