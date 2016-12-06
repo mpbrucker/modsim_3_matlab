@@ -6,7 +6,7 @@ function [t,res,eventTime,failState] = run_pendulum(initial_time, final_time, le
 
     x_init = 0; % m
 
-    theta_init = pi+.1; % rad
+    theta_init = pi-.1; % rad
     
     v_x_init = 0; % m/s
     v_theta_init = 0; % rad/s

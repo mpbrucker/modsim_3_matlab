@@ -10,7 +10,7 @@ function animate_data()
     % https://en.wikipedia.org/wiki/Human_body_weight
     
 %     [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 8000,500,1000);
-    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 9600,2000,1100);
+    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 9600,2500,2000);
 
     display(t(end));
     x_vals = out(:,1);
