@@ -1,4 +1,4 @@
-function [t,res,eventTime,failState,forces] = run_pendulum(initial_time, final_time, length, width, mass_person, timestep,k_p,k_i,k_d)
+function [t,res,failState,forces] = run_pendulum(initial_time, final_time, length, width, mass_person, timestep,k_p,k_i,k_d)
 
     failState = 0; % The failure state of the system
 
@@ -18,7 +18,7 @@ function [t,res,eventTime,failState,forces] = run_pendulum(initial_time, final_t
     mass_ladder = 136/2; % kg, http://www.wernerco.com/us/support/ladder-safety-tips/how-to-choose-a-ladder
     m = mass_ladder + mass_person; % mass of pendulum, kg
     
-    b = 1; % coefficient of friction for cart, N/m/sec
+    b = .5; % coefficient of friction for cart, N/m/sec
 
     l = length/2; % length to pendulum center of mass, m
     w = width; % Width of pendulum cuboid, m
@@ -30,7 +30,7 @@ function [t,res,eventTime,failState,forces] = run_pendulum(initial_time, final_t
     % Ode options: event stops sim when pendulum hits cart, rel tol
     % increases tolerance 
     
-    maxRange = pi; % radians, range of theta (centered around 0) for 
+    maxRange = 1; % radians, range of theta (centered around 0) for 
     % pendulum to be considered stable
     diff = maxRange/2;
     pos_value = pi - diff; % radians, values for event function
@@ -62,7 +62,6 @@ function [t,res,eventTime,failState,forces] = run_pendulum(initial_time, final_t
 
     
     size_time = size(tspan,2);
-    eventTime = 0;
     for j = 1:size_time-1
         if (abs(error_vals(end)) < 0.001)
         F = 0;
@@ -77,11 +76,7 @@ function [t,res,eventTime,failState,forces] = run_pendulum(initial_time, final_t
         curr_theta = out_vars(end,2); % The pendulum angle after each timestep
         state_vars_init = out_vars(end,:); % The state vars to plug in to the next timestep function
         
-
-        
         error_vals = cat(1,error_vals,pi-curr_theta);
-        
-        
         % Builds the vectors of times and state vars after each timestep
         t = vertcat(t,t(end)+t_out(end));
         state_vars = cat(1,state_vars,out_vars(end,:));

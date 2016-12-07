@@ -9,8 +9,10 @@ function animate_data()
     m_person = 80.7; % kg, average mass of person in North America
     % https://en.wikipedia.org/wiki/Human_body_weight
     
-%     [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 8000,500,1000);
-    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .01, 9600,2500,2000);
+    [t,out,~,~] = run_pendulum(0,20, h_p,w_p, m_person, .001, 100,1,1);
+%     [t,out,~,forces] = run_pendulum(0,20, h_p,w_p, m_person, .01, 8100,100,2000);
+%     impulse = force_profile(t,forces);
+%     display(impulse);
 
     display(t(end));
     x_vals = out(:,1);
