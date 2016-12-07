@@ -25,7 +25,7 @@ function [t,res,failState,forces] = run_pendulum(initial_time, final_time, lengt
     
     % Note: length is multipled by 2 because the actual length is twice the
     % length to the center of mass
-    I = get_inertia_moment(l*2,w,m); % moment of inertia of the pendulum, kg*m^2
+    I = get_inertia_moment(l*2,w,m) % moment of inertia of the pendulum, kg*m^2
     
     % Ode options: event stops sim when pendulum hits cart, rel tol
     % increases tolerance 
@@ -69,7 +69,7 @@ function [t,res,failState,forces] = run_pendulum(initial_time, final_time, lengt
         [i,d] = get_PID_params(t,error_vals);
         F = error_vals(end)*k_p+i*k_i+d*k_d; 
         end
-        dxdt = @(ti, vars) get_state_vars(ti, vars, M, m, b, l, I,F);
+        dxdt = @(ti, vars) get_state_vars(ti, vars, M, m, b, l, I, F);
         [t_out, out_vars] = ode45(dxdt, [0 timestep], state_vars_init, options);
         
         

@@ -1,4 +1,4 @@
-function animate_data()
+function res = animate_data()
     clf;
     w = 1.5; % 1/2 Width of cart (m)
     h = .5; % 1/2 Height of cart (m)
@@ -44,7 +44,6 @@ function animate_data()
     min_max = [min(x_vals)-w max(x_vals)+w 0 height];
     axis(min_max);
 
-
     % Iterate across the time interval, animating the shapes
     for j = 1:length(t)-1
           x_center = x_vals(j);
@@ -72,8 +71,10 @@ function animate_data()
           %new_axis = [(xp_center-(w*3)) (xp_center+(w*6)) 0 w*6];
           %axis(new_axis);
           
+          % Add current frame to matrix M of movie frames
+          M(j) = getframe;
           pause(t(j+1)-t(j));
     end
-    
+    res = M;
 end
     
